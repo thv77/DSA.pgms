@@ -21,7 +21,7 @@ void main()
     {
         if(a[i]==key)
         {
-            printf("%d is found in %d\n",key,i+1);
+            printf("%d is found in %d\n",key,i);
             flag=1;
         }
     }
