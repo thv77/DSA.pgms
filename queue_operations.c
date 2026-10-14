@@ -71,9 +71,8 @@ void dequeue()
 {
     int data;
 
-    if (rear == -1 && front == 0)
+    if (front > rear)
     {
-        printf("%d%d", rear, front);
         printf("queue underflow\n");
     }
     else
