@@ -1,33 +1,34 @@
-#include<stdio.h>
+#include <stdio.h>
 
-void main()
+#define MAX_SIZE 100
+
+int main(void)
 {
-    int n,i,key,flag=0,a[10];
+    int a[MAX_SIZE], n, i, key;
 
-    printf("enter the limit of the array:");
-    scanf("%d",&n);
-
-    printf("enter the %d elements:",n);
-
-    for(i=0;i<n;i++)
-    {
-        scanf("%d",&a[i]);
+    printf("Enter array size (1-%d): ", MAX_SIZE);
+    if (scanf("%d", &n) != 1 || n < 1 || n > MAX_SIZE) {
+        printf("Invalid array size.\n");
+        return 1;
     }
 
-    printf("enter the key:");
-    scanf("%d",&key);
+    printf("Enter %d elements: ", n);
+    for (i = 0; i < n; i++) {
+        if (scanf("%d", &a[i]) != 1)
+            return 1;
+    }
 
-    for(i=0;i<n;i++)
-    {
-        if(a[i]==key)
-        {
-            printf("%d is found in %d\n",key,i);
-            flag=1;
+    printf("Enter value to search: ");
+    if (scanf("%d", &key) != 1)
+        return 1;
+
+    for (i = 0; i < n; i++) {
+        if (a[i] == key) {
+            printf("%d found at position %d.\n", key, i + 1);
+            return 0;
         }
     }
 
-    if(flag==0)
-    {
-        printf("%d is not found",key);
-    }
+    printf("%d not found.\n", key);
+    return 0;
 }
