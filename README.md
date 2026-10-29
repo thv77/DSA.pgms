@@ -45,7 +45,6 @@ Replace `linear_search.c` and the executable name with the program you want to r
 
 ## Notes
 
-- Binary search expects the input array to be sorted in ascending order.
 - The graph traversal programs use an adjacency matrix and vertex numbers starting at `0`.
 - The polynomial programs have different input formats: coefficients by degree for the array version, and coefficient/exponent pairs for the structure version.
 - These examples are intended for learning. Read the prompts and constraints before entering data.
