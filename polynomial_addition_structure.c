@@ -1,29 +1,81 @@
 #include <stdio.h>
-#define MAX 10
-struct term { int coeff, exp; };
-int main(void) {
-    struct term a[MAX], b[MAX], c[2*MAX];
-    int n, m, i=0, j=0, k=0;
-    printf("Number of terms in first polynomial (1-%d): ", MAX);
-    if (scanf("%d",&n)!=1 || n<1 || n>MAX) return 1;
-    printf("Enter coefficient and exponent for each term in descending exponent order:\n");
-    for (i=0;i<n;i++) scanf("%d%d",&a[i].coeff,&a[i].exp);
-    printf("Number of terms in second polynomial (1-%d): ", MAX);
-    if (scanf("%d",&m)!=1 || m<1 || m>MAX) return 1;
-    printf("Enter coefficient and exponent for each term in descending exponent order:\n");
-    for (i=0;i<m;i++) scanf("%d%d",&b[i].coeff,&b[i].exp);
-    i=0; j=0;
-    while (i<n && j<m) {
-        if (a[i].exp==b[j].exp) { c[k]=(struct term){a[i].coeff+b[j].coeff,a[i].exp}; i++; j++; }
-        else if (a[i].exp>b[j].exp) c[k++]=a[i++];
-        else c[k++]=b[j++];
-        if (i<=n && j<=m && k<2*MAX && (i==n || j==m || a[i].exp!=b[j].exp)) { /* append handled below */ }
-        if (k<2*MAX && (k==0 || c[k-1].exp!=c[k].exp)) k++;
+
+#define MAX_TERMS 20
+
+typedef struct {
+    int coefficient;
+    int exponent;
+} Term;
+
+int read_polynomial(Term p[], const char *label)
+{
+    int n, i;
+    printf("Number of terms in %s (1-%d): ", label, MAX_TERMS);
+    if (scanf("%d", &n) != 1 || n < 1 || n > MAX_TERMS)
+        return -1;
+
+    printf("Enter each coefficient and exponent in descending exponent order:\n");
+    for (i = 0; i < n; i++) {
+        if (scanf("%d%d", &p[i].coefficient, &p[i].exponent) != 2)
+            return -1;
+        if (i > 0 && p[i].exponent >= p[i - 1].exponent) {
+            printf("Exponents must be in strictly descending order.\n");
+            return -1;
+        }
     }
-    while (i<n) c[k++]=a[i++];
-    while (j<m) c[k++]=b[j++];
+    return n;
+}
+
+int main(void)
+{
+    Term a[MAX_TERMS], b[MAX_TERMS], sum[2 * MAX_TERMS];
+    int n, m, i = 0, j = 0, k = 0, first = 1;
+
+    n = read_polynomial(a, "the first polynomial");
+    if (n < 0) {
+        printf("Invalid input.\n");
+        return 1;
+    }
+    m = read_polynomial(b, "the second polynomial");
+    if (m < 0) {
+        printf("Invalid input.\n");
+        return 1;
+    }
+
+    while (i < n && j < m) {
+        if (a[i].exponent == b[j].exponent) {
+            int coefficient = a[i].coefficient + b[j].coefficient;
+            if (coefficient != 0) {
+                sum[k].coefficient = coefficient;
+                sum[k++].exponent = a[i].exponent;
+            }
+            i++;
+            j++;
+        } else if (a[i].exponent > b[j].exponent) {
+            sum[k++] = a[i++];
+        } else {
+            sum[k++] = b[j++];
+        }
+    }
+    while (i < n) sum[k++] = a[i++];
+    while (j < m) sum[k++] = b[j++];
+
     printf("Sum: ");
-    for (i=0;i<k;i++) if (c[i].coeff) printf("%dx^%d%s",c[i].coeff,c[i].exp,i==k-1?"":" + ");
+    for (i = 0; i < k; i++) {
+        if (sum[i].coefficient == 0)
+            continue;
+        if (!first && sum[i].coefficient > 0)
+            printf(" + ");
+        else if (!first)
+            printf(" - ");
+        else if (sum[i].coefficient < 0)
+            printf("-");
+        printf("%dx^%d", sum[i].coefficient < 0 ? -sum[i].coefficient : sum[i].coefficient,
+               sum[i].exponent);
+        first = 0;
+    }
+    if (first)
+        printf("0");
     printf("\n");
     return 0;
 }
