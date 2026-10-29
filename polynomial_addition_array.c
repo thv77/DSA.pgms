@@ -1,18 +1,42 @@
 #include <stdio.h>
-int main(void) {
-    int n, i, a[10], b[10], c[10];
-    printf("Enter the highest order of the polynomials (0-9): ");
-    if (scanf("%d", &n) != 1 || n < 0 || n > 9) return 1;
-    printf("Enter coefficients of first polynomial, highest power first: ");
-    for (i=0; i<=n; i++) scanf("%d", &a[i]);
-    printf("Enter coefficients of second polynomial, highest power first: ");
-    for (i=0; i<=n; i++) scanf("%d", &b[i]);
-    for (i=0; i<=n; i++) c[i]=a[i]+b[i];
-    printf("Result: ");
-    for (i=0; i<=n; i++) {
-        printf("%dx^%d", c[i], n-i);
-        if (i<n) printf(" + ");
+
+#define MAX_ORDER 9
+
+int main(void)
+{
+    int first[MAX_ORDER + 1];
+    int second[MAX_ORDER + 1];
+    int sum[MAX_ORDER + 1];
+    int order, i;
+
+    printf("Enter the highest polynomial order (0-%d): ", MAX_ORDER);
+    if (scanf("%d", &order) != 1 || order < 0 || order > MAX_ORDER) {
+        printf("Invalid polynomial order.\n");
+        return 1;
     }
+
+    printf("Enter coefficients of the first polynomial, highest power first: ");
+    for (i = 0; i <= order; i++) {
+        if (scanf("%d", &first[i]) != 1)
+            return 1;
+    }
+
+    printf("Enter coefficients of the second polynomial, highest power first: ");
+    for (i = 0; i <= order; i++) {
+        if (scanf("%d", &second[i]) != 1)
+            return 1;
+    }
+
+    for (i = 0; i <= order; i++)
+        sum[i] = first[i] + second[i];
+
+    printf("Sum: ");
+    for (i = 0; i <= order; i++) {
+        printf("%dx^%d", sum[i], order - i);
+        if (i < order)
+            printf(" + ");
+    }
+
     printf("\n");
     return 0;
 }
