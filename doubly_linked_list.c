@@ -1,185 +1,388 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
+struct node
+{
     int data;
-    struct Node *prev;
-    struct Node *next;
-} Node;
+    struct node *rlink, *llink;
+};
 
-static Node *head = NULL;
+struct node *head = NULL, *ptr = NULL, *temp = NULL;
 
-static Node *create_node(int value)
-{
-    Node *node = malloc(sizeof *node);
+int item, key;
 
-    if (node == NULL) {
-        printf("Memory allocation failed.\n");
-        return NULL;
-    }
-
-    node->data = value;
-    node->prev = NULL;
-    node->next = NULL;
-    return node;
-}
-
-static void insert_front(int value)
-{
-    Node *node = create_node(value);
-
-    if (node == NULL)
-        return;
-
-    node->next = head;
-    if (head != NULL)
-        head->prev = node;
-    head = node;
-}
-
-static void insert_end(int value)
-{
-    Node *node = create_node(value);
-    Node *current;
-
-    if (node == NULL)
-        return;
-
-    if (head == NULL) {
-        head = node;
-        return;
-    }
-
-    current = head;
-    while (current->next != NULL)
-        current = current->next;
-
-    current->next = node;
-    node->prev = current;
-}
-
-static void delete_value(int value)
-{
-    Node *current = head;
-
-    while (current != NULL && current->data != value)
-        current = current->next;
-
-    if (current == NULL) {
-        printf("Value not found.\n");
-        return;
-    }
-
-    if (current->prev != NULL)
-        current->prev->next = current->next;
-    else
-        head = current->next;
-
-    if (current->next != NULL)
-        current->next->prev = current->prev;
-
-    free(current);
-    printf("Deleted %d.\n", value);
-}
-
-static void display_forward(void)
-{
-    Node *current = head;
-
-    if (current == NULL) {
-        printf("List is empty.\n");
-        return;
-    }
-
-    printf("Forward: ");
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
-    }
-    printf("\n");
-}
-
-static void display_reverse(void)
-{
-    Node *current = head;
-
-    if (current == NULL) {
-        printf("List is empty.\n");
-        return;
-    }
-
-    while (current->next != NULL)
-        current = current->next;
-
-    printf("Reverse: ");
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->prev;
-    }
-    printf("\n");
-}
-
-static void free_list(void)
-{
-    while (head != NULL) {
-        Node *next = head->next;
-        free(head);
-        head = next;
-    }
-}
+void insertFirst();
+void insertLast();
+void insertKey();
+void deleteFirst();
+void deleteLast();
+void deleteKey();
+void display();
+void display1();
 
 int main(void)
 {
-    int choice, value;
+    int n;
 
-    do {
-        printf("\n1. Insert at front\n");
-        printf("2. Insert at end\n");
-        printf("3. Delete a value\n");
-        printf("4. Display forward\n");
-        printf("5. Display reverse\n");
-        printf("0. Exit\n");
-        printf("Choice: ");
+    printf("Menu:\n");
+    printf("1. Insert at first\n");
+    printf("2. Insert at last\n");
+    printf("3. Insert after a key\n");
+    printf("4. Delete from the front\n");
+    printf("5. Delete from the end\n");
+    printf("6. Delete a key\n");
+    printf("7. Display forward\n");
+    printf("8. Display reverse\n");
+    printf("9. Exit\n");
 
-        if (scanf("%d", &choice) != 1) {
-            free_list();
+    do
+    {
+        printf("\nEnter the choice: ");
+
+        if (scanf("%d", &n) != 1)
+        {
+            printf("Invalid input\n");
             return 1;
         }
 
-        switch (choice) {
+        switch (n)
+        {
             case 1:
-            case 2:
-                printf("Enter value: ");
-                if (scanf("%d", &value) != 1) {
-                    free_list();
-                    return 1;
-                }
-                if (choice == 1)
-                    insert_front(value);
-                else
-                    insert_end(value);
+                insertFirst();
                 break;
-            case 3:
-                printf("Enter value to delete: ");
-                if (scanf("%d", &value) != 1) {
-                    free_list();
-                    return 1;
-                }
-                delete_value(value);
-                break;
-            case 4:
-                display_forward();
-                break;
-            case 5:
-                display_reverse();
-                break;
-            case 0:
-                break;
-            default:
-                printf("Invalid choice.\n");
-        }
-    } while (choice != 0);
 
-    free_list();
+            case 2:
+                insertLast();
+                break;
+
+            case 3:
+                insertKey();
+                break;
+
+            case 4:
+                deleteFirst();
+                break;
+
+            case 5:
+                deleteLast();
+                break;
+
+            case 6:
+                deleteKey();
+                break;
+
+            case 7:
+                display();
+                break;
+
+            case 8:
+                display1();
+                break;
+
+            case 9:
+                printf("Have a nice day!\n");
+                break;
+
+            default:
+                printf("Invalid operation\n");
+        }
+
+    } while (n != 9);
+
     return 0;
+}
+
+/* Insert at the beginning */
+void insertFirst()
+{
+    temp = malloc(sizeof(struct node));
+
+    if (temp == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    printf("Enter the element to be inserted: ");
+    if (scanf("%d", &item) != 1)
+    {
+        free(temp);
+        printf("Invalid input\n");
+        return;
+    }
+
+    temp->data = item;
+    temp->llink = NULL;
+    temp->rlink = head;
+
+    if (head != NULL)
+    {
+        head->llink = temp;
+    }
+
+    head = temp;
+
+    printf("The current status is:\n");
+    display();
+}
+
+/* Insert at the end */
+void insertLast()
+{
+    temp = malloc(sizeof(struct node));
+
+    if (temp == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    printf("Enter the element to be inserted: ");
+    if (scanf("%d", &item) != 1)
+    {
+        free(temp);
+        printf("Invalid input\n");
+        return;
+    }
+
+    temp->data = item;
+    temp->rlink = NULL;
+
+    if (head == NULL)
+    {
+        temp->llink = NULL;
+        head = temp;
+    }
+    else
+    {
+        ptr = head;
+
+        while (ptr->rlink != NULL)
+        {
+            ptr = ptr->rlink;
+        }
+
+        temp->llink = ptr;
+        ptr->rlink = temp;
+    }
+
+    printf("The current status is:\n");
+    display();
+}
+
+/* Insert after a specified key */
+void insertKey()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    printf("Enter the element to be inserted: ");
+    if (scanf("%d", &item) != 1)
+    {
+        printf("Invalid input\n");
+        return;
+    }
+
+    printf("Enter the key: ");
+    if (scanf("%d", &key) != 1)
+    {
+        printf("Invalid input\n");
+        return;
+    }
+
+    ptr = head;
+
+    while (ptr != NULL && ptr->data != key)
+    {
+        ptr = ptr->rlink;
+    }
+
+    if (ptr == NULL)
+    {
+        printf("Search fails: key not found\n");
+        return;
+    }
+
+    temp = malloc(sizeof(struct node));
+
+    if (temp == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    temp->data = item;
+    temp->rlink = ptr->rlink;
+    temp->llink = ptr;
+
+    if (ptr->rlink != NULL)
+    {
+        ptr->rlink->llink = temp;
+    }
+
+    ptr->rlink = temp;
+
+    printf("The current status is:\n");
+    display();
+}
+
+/* Delete from the beginning */
+void deleteFirst()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    ptr = head;
+
+    printf("%d is deleted\n", ptr->data);
+
+    head = head->rlink;
+
+    if (head != NULL)
+    {
+        head->llink = NULL;
+    }
+
+    free(ptr);
+
+    printf("The current status is:\n");
+    display();
+}
+
+/* Delete from the end */
+void deleteLast()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    ptr = head;
+
+    while (ptr->rlink != NULL)
+    {
+        ptr = ptr->rlink;
+    }
+
+    printf("%d is deleted\n", ptr->data);
+
+    if (ptr->llink != NULL)
+    {
+        ptr->llink->rlink = NULL;
+    }
+    else
+    {
+        head = NULL;
+    }
+
+    free(ptr);
+
+    printf("The current status is:\n");
+    display();
+}
+
+/* Delete a node containing the specified key */
+void deleteKey()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    printf("Enter the data to be deleted: ");
+
+    if (scanf("%d", &key) != 1)
+    {
+        printf("Invalid input\n");
+        return;
+    }
+
+    ptr = head;
+
+    while (ptr != NULL && ptr->data != key)
+    {
+        ptr = ptr->rlink;
+    }
+
+    if (ptr == NULL)
+    {
+        printf("Search fails: key not found\n");
+        return;
+    }
+
+    printf("%d is deleted\n", ptr->data);
+
+    if (ptr->llink != NULL)
+    {
+        ptr->llink->rlink = ptr->rlink;
+    }
+    else
+    {
+        head = ptr->rlink;
+    }
+
+    if (ptr->rlink != NULL)
+    {
+        ptr->rlink->llink = ptr->llink;
+    }
+
+    free(ptr);
+
+    printf("The current status is:\n");
+    display();
+}
+
+/* Display the list in forward order */
+void display()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    ptr = head;
+
+    while (ptr != NULL)
+    {
+        printf("%d\t", ptr->data);
+        ptr = ptr->rlink;
+    }
+
+    printf("\n");
+}
+
+/* Display the list in reverse order */
+void display1()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    ptr = head;
+
+    /* Move to the last node */
+    while (ptr->rlink != NULL)
+    {
+        ptr = ptr->rlink;
+    }
+
+    /* Traverse backward */
+    while (ptr != NULL)
+    {
+        printf("%d\t", ptr->data);
+        ptr = ptr->llink;
+    }
+
+    printf("\n");
 }

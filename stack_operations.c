@@ -1,83 +1,99 @@
-#include <stdio.h>
-
-#define MAX_SIZE 5
-
-static int stack[MAX_SIZE];
-static int top = -1;
-
-static void push(void)
+#include<stdio.h>
+#define max 5
+int main()
 {
-    int value;
-
-    if (top == MAX_SIZE - 1) {
-        printf("Stack overflow.\n");
-        return;
-    }
-
-    printf("Enter value to push: ");
-    if (scanf("%d", &value) != 1)
-        return;
-
-    stack[++top] = value;
-    printf("%d pushed onto the stack.\n", value);
-}
-
-static void pop(void)
-{
-    if (top == -1) {
-        printf("Stack underflow.\n");
-        return;
-    }
-
-    printf("Popped: %d\n", stack[top--]);
-}
-
-static void display(void)
-{
-    int i;
-
-    if (top == -1) {
-        printf("Stack is empty.\n");
-        return;
-    }
-
-    printf("Stack (top to bottom): ");
-    for (i = top; i >= 0; i--)
-        printf("%d ", stack[i]);
-
-    printf("\n");
-}
-
-int main(void)
-{
-    int choice;
-
-    do {
-        printf("\n1. Push\n");
-        printf("2. Pop\n");
-        printf("3. Display\n");
-        printf("0. Exit\n");
-        printf("Choice: ");
-
-        if (scanf("%d", &choice) != 1)
-            return 1;
-
-        switch (choice) {
-            case 1:
-                push();
-                break;
-            case 2:
-                pop();
-                break;
-            case 3:
-                display();
-                break;
-            case 0:
-                break;
-            default:
-                printf("Invalid choice.\n");
-        }
-    } while (choice != 0);
-
-    return 0;
-}
+   int stack[max],choice,item,i;
+   int top=-1;
+   
+       while(1)
+       {
+         printf("\n STACK \n");
+         printf("\n 1.PUSH \n");
+         printf("\n 2.POP \n");
+         printf("\n 3.DISPLAY \n");
+         printf("\n 4.EXIT \n");
+         
+         printf("\n Enter your choice: \n");
+         scanf("%d",&choice);
+         
+                 if(choice==1)
+                 { 
+                  if(top=max-1)
+                  {
+                   printf("Stack overflow");
+                  }
+                  else
+                  {
+                   printf("Enter the element: ");
+                   scanf("%d",&item);
+                   top=top+1;
+                   stack[top]=item;
+                   printf("The element %d pushed into the stack",item);
+                   }
+                  }
+                  
+                  else if(choice==2)
+                  {
+                   if(top=-1)
+                   {
+                    printf("Stack Underflow");
+                   }
+                   else 
+                   {
+                    item=stack[top];
+                    top=top-1;
+                    printf("The element %d poped from the stack",item);
+                   }
+                  }
+                  
+                  else if(choice==3)
+                  {
+                   if(top==-1)
+                   {
+                    printf("Stack is empty");
+                   }
+                   else
+                   {
+                    printf("The stack elements are: ");
+                     for(i=top;i>=0;i--)
+                      {
+                       printf("%d",stack[i]);
+                       }
+                    }
+                    }
+                    else if(choice==4)
+                    break;
+                    
+                    else
+                    {
+                     printf("Invalid Choice");
+                    }
+                    return 0;
+               }
+            
+  }                  
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                   
+   
+   

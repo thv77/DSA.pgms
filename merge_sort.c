@@ -1,65 +1,100 @@
 #include <stdio.h>
 
-#define MAX 100
+int b[20];
 
-int temp[MAX];
-
-void merge(int a[], int left, int mid, int right)
-{
-    int i = left;
-    int j = mid + 1;
-    int k = left;
-
-    while (i <= mid && j <= right) {
-        if (a[i] <= a[j])
-            temp[k++] = a[i++];
-        else
-            temp[k++] = a[j++];
-    }
-
-    while (i <= mid)
-        temp[k++] = a[i++];
-
-    while (j <= right)
-        temp[k++] = a[j++];
-
-    for (i = left; i <= right; i++)
-        a[i] = temp[i];
-}
-
-void merge_sort(int a[], int left, int right)
-{
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-
-        merge_sort(a, left, mid);
-        merge_sort(a, mid + 1, right);
-        merge(a, left, mid, right);
-    }
-}
+void mergesort(int a[], int low, int high);
+void merge(int a[], int low, int mid, int high);
 
 int main(void)
 {
-    int a[MAX], n, i;
+    int i, n, a[20];
 
-    printf("Enter array size (1-%d): ", MAX);
-    if (scanf("%d", &n) != 1 || n < 1 || n > MAX) {
-        printf("Invalid array size.\n");
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    if (n < 1 || n > 20)
+    {
+        printf("Invalid number of elements\n");
         return 1;
     }
 
-    printf("Enter elements: ");
-    for (i = 0; i < n; i++) {
-        if (scanf("%d", &a[i]) != 1)
-            return 1;
+    printf("Enter the %d numbers: ", n);
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
     }
 
-    merge_sort(a, 0, n - 1);
+    mergesort(a, 0, n - 1);
 
-    printf("Sorted array: ");
+    printf("The sorted elements are:\n");
+
     for (i = 0; i < n; i++)
-        printf("%d ", a[i]);
+    {
+        printf("%d\t", a[i]);
+    }
 
     printf("\n");
+
     return 0;
 }
+
+void mergesort(int a[], int low, int high)
+{
+    int mid;
+
+    if (low < high)
+    {
+        mid = (low + high) / 2;
+
+        mergesort(a, low, mid);
+        mergesort(a, mid + 1, high);
+
+        merge(a, low, mid, high);
+    }
+}
+
+void merge(int a[], int low, int mid, int high)
+{
+    int i, j, k;
+
+    i = low;
+    j = mid + 1;
+    k = low;
+
+    while (i <= mid && j <= high)
+    {
+        if (a[i] < a[j])
+        {
+            b[k] = a[i];
+            i++;
+            k++;
+        }
+        else
+        {
+            b[k] = a[j];
+            j++;
+            k++;
+        }
+    }
+
+    while (i <= mid)
+    {
+        b[k] = a[i];
+        i++;
+        k++;
+    }
+
+    while (j <= high)
+    {
+        b[k] = a[j];
+        j++;
+        k++;
+    }
+
+    for (i = low; i <= high; i++)
+    {
+        a[i] = b[i];
+    }
+}
+

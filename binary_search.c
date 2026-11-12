@@ -2,27 +2,25 @@
 
 int main(void)
 {
-    int n, i, j, a[10], key, temp;
-    int first, last, mid, flag = 0;
+    int n, i, a[10], key, flag = 0;
+    int j, temp, first, last, mid;
 
-    printf("Enter the limit of the array (1-10): ");
-    if (scanf("%d", &n) != 1 || n < 1 || n > 10) {
-        printf("Invalid array size.\n");
-        return 1;
+    printf("Enter the limit of the array: ");
+    scanf("%d", &n);
+
+    printf("Enter the %d elements: ", n);
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
     }
 
-    printf("Enter %d elements: ", n);
-    for (i = 0; i < n; i++) {
-        if (scanf("%d", &a[i]) != 1) {
-            printf("Invalid input.\n");
-            return 1;
-        }
-    }
-
-    /* Sort the array using bubble sort */
-    for (j = 1; j < n; j++) {
-        for (i = 0; i < n - j; i++) {
-            if (a[i] > a[i + 1]) {
+    for (j = 1; j < n; j++)
+    {
+        for (i = 0; i < n - j; i++)
+        {
+            if (a[i] > a[i + 1])
+            {
                 temp = a[i];
                 a[i] = a[i + 1];
                 a[i + 1] = temp;
@@ -30,38 +28,37 @@ int main(void)
         }
     }
 
-    printf("Sorted array: ");
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
+    printf("Enter the key: ");
+    scanf("%d", &key);
 
-    printf("\nEnter the element to search: ");
-    if (scanf("%d", &key) != 1) {
-        printf("Invalid input.\n");
-        return 1;
-    }
-
-    /* Binary search */
     first = 0;
     last = n - 1;
 
-    while (first <= last) {
+    while (first <= last)
+    {
         mid = (first + last) / 2;
 
-        if (a[mid] == key) {
-            printf("Element found at position %d.\n", mid + 1);
+        if (a[mid] == key)
+        {
+            printf("The element is found in %d", mid + 1);
             flag = 1;
             break;
-        } else if (a[mid] > key) {
+        }
+        else if (a[mid] > key)
+        {
             last = mid - 1;
-        } else {
+        }
+        else
+        {
             first = mid + 1;
         }
     }
 
-    if (flag == 0) {
-        printf("Element not found.\n");
+    if (flag == 0)
+    {
+        printf("The element is not found");
     }
 
     return 0;
 }
+

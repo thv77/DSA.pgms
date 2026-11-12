@@ -1,68 +1,62 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <ctype.h> /* isdigit */
+#define MAX 100
 
-#define MAX_SIZE 100
+int stack[MAX];
+int top = -1;
 
-int main(void)
-{
-    char expression[MAX_SIZE];
-    int stack[MAX_SIZE];
-    int top = -1;
-    int i, first, second, result;
-
-    printf("Enter postfix expression using single-digit operands: ");
-    if (scanf("%99s", expression) != 1)
-        return 1;
-
-    for (i = 0; expression[i] != '\0'; i++) {
-        char ch = expression[i];
-
-        if (isdigit((unsigned char) ch)) {
-            if (top >= MAX_SIZE - 1) {
-                printf("Expression is too long.\n");
-                return 1;
+      void push(int value)
+       {
+        stack[++top] = value;
+       }
+          int pop()
+           {
+             return stack[top--];
+           }
+ int main()
+ {
+  char postfix[MAX];
+  int i, a, b, result;
+  
+  printf("Enter the postfix expression: ");
+  scanf("%s", postfix);
+  
+  
+       for (i = 0; postfix[i] != '\0'; i++)
+        {
+          /* If operand, push it into stack */
+           if (isdigit(postfix[i]))
+            {
+             push(postfix[i] - '0');
             }
-            stack[++top] = ch - '0';
-        } else {
-            if (top < 1) {
-                printf("Invalid postfix expression.\n");
-                return 1;
-            }
+            
+           /* If operator, perform operation */
+           else
+            {
+             b = pop();
+             a = pop();
+             
+                         switch (postfix[i])
+                          {
+                           case '+':
+                           result = a + b;
+                           break;
 
-            second = stack[top--];
-            first = stack[top--];
-
-            switch (ch) {
-                case '+':
-                    result = first + second;
-                    break;
-                case '-':
-                    result = first - second;
-                    break;
-                case '*':
-                    result = first * second;
-                    break;
-                case '/':
-                    if (second == 0) {
-                        printf("Division by zero is not allowed.\n");
-                        return 1;
-                    }
-                    result = first / second;
-                    break;
-                default:
-                    printf("Unsupported operator: %c\n", ch);
-                    return 1;
-            }
-
-            stack[++top] = result;
-        }
-    }
-
-    if (top != 0) {
-        printf("Invalid postfix expression.\n");
-        return 1;
-    }
-
-    printf("Result = %d\n", stack[top]);
-    return 0;
+                           case '-':
+                           result = a - b;
+                           break;
+                           
+                           case '*':
+                           result = a * b;
+                           break;
+                           
+                           case '/':
+                           result = a / b;
+                           break;
+                          }
+                           push(result);
+             }
+         }
+          printf("Result = %d\n", pop());
+          return 0;
 }
