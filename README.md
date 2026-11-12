@@ -18,7 +18,7 @@ A collection of beginner-friendly **Data Structures and Algorithms (DSA)** progr
 | 10 | Postfix Evaluation | [postfix_evaluation.c](postfix_evaluation.c) |
 | 11 | Singly Linked List Operations | [singly_linked_list.c](singly_linked_list.c) |
 | 12 | Doubly Linked List Operations | [doubly_linked_list.c](doubly_linked_list.c) |
-| 13 | Binary Search Tree (Insertion, Search, Inorder Traversal) | [binary_search_tree.c](binary_search_tree.c) |
+| 13 | Binary Search | [binary_search.c](binary_search.c) |
 | 14 | Breadth-First Search (BFS) | [breadth_first_search.c](breadth_first_search.c) |
 | 15 | Depth-First Search (DFS) | [depth_first_search.c](depth_first_search.c) |
 | 16 | Selection Sort | [selection_sort.c](selection_sort.c) |
@@ -31,17 +31,17 @@ Install GCC, then compile a source file and run the executable.
 
 **Linux / macOS**
 ```bash
-gcc -std=c11 -Wall -Wextra -pedantic linear_search.c -o linear_search
-./linear_search
+gcc -std=c11 -Wall -Wextra -pedantic binary_search.c -o binary_search
+./binary_search
 ```
 
 **Windows (MinGW GCC)**
 ```bash
-gcc -std=c11 -Wall -Wextra -pedantic linear_search.c -o linear_search.exe
-linear_search.exe
+gcc -std=c11 -Wall -Wextra -pedantic binary_search.c -o binary_search.exe
+binary_search.exe
 ```
 
-Replace `linear_search.c` and the executable name with the program you want to run. Compile each file separately because each program has its own `main()`.
+Replace `binary_search.c` and the executable name with the program you want to run. Compile each file separately because each program has its own `main()`.
 
 ## Notes
 
