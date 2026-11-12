@@ -1,44 +1,58 @@
 #include <stdio.h>
 
-#define MAX_VERTICES 10
+#define MAX 10
 
 int main(void)
 {
-    int graph[MAX_VERTICES][MAX_VERTICES];
-    int stack[MAX_VERTICES];
-    int visited[MAX_VERTICES] = {0};
-    int n, start, i, j, top = -1, vertex;
+    int vertices, start, current, i, j, top = -1;
 
-    printf("Number of vertices (1-%d): ", MAX_VERTICES);
-    if (scanf("%d", &n) != 1 || n < 1 || n > MAX_VERTICES) {
-        printf("Invalid number of vertices.\n");
+    int stack[MAX];
+    int adj[MAX][MAX];
+    int visited[MAX] = {0};
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+
+    if (vertices < 1 || vertices > MAX)
+    {
+        printf("Invalid number of vertices\n");
         return 1;
     }
 
-    printf("Enter the adjacency matrix:\n");
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            if (scanf("%d", &graph[i][j]) != 1)
-                return 1;
+    printf("Enter adjacency matrix:\n");
+
+    for (i = 0; i < vertices; i++)
+    {
+        for (j = 0; j < vertices; j++)
+        {
+            scanf("%d", &adj[i][j]);
         }
     }
 
-    printf("Starting vertex (0-%d): ", n - 1);
-    if (scanf("%d", &start) != 1 || start < 0 || start >= n) {
-        printf("Invalid starting vertex.\n");
+    printf("Enter starting vertex (0 to %d): ", vertices - 1);
+    scanf("%d", &start);
+
+    if (start < 0 || start >= vertices)
+    {
+        printf("Invalid starting vertex\n");
         return 1;
     }
 
     stack[++top] = start;
     visited[start] = 1;
-    printf("DFS traversal: ");
 
-    while (top >= 0) {
-        vertex = stack[top--];
-        printf("%d ", vertex);
+    printf("DFS:\n");
 
-        for (i = n - 1; i >= 0; i--) {
-            if (graph[vertex][i] && !visited[i]) {
+    while (top != -1)
+    {
+        current = stack[top--];
+
+        printf("%d ", current);
+
+        for (i = vertices - 1; i >= 0; i--)
+        {
+            if (adj[current][i] == 1 && visited[i] == 0)
+            {
                 stack[++top] = i;
                 visited[i] = 1;
             }
@@ -46,5 +60,7 @@ int main(void)
     }
 
     printf("\n");
+
     return 0;
 }
+
